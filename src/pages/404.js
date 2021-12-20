@@ -1,54 +1,69 @@
 import * as React from "react"
 import { Link } from "gatsby"
+import { graphql } from "gatsby"
+import Layout from "../components/layout"
+import Seo from "../components/seo"
+const emojiList = "\\(^\u0414^)/ (\u0387.\u0387) (\u02da\u0394\u02da)b (\u0387_\u0387) (^_^)b (>_<) (o^^)o (;-;) (\u2265o\u2264) \\(o_o)/ (^-^*) (='X'=)".split(
+    " "
+)
+const errorMap = {
+  PAGE_NOT_FOUND: "Unfortunately, this page doesn't exist."
+}
+let emojiIndex = Math.floor(Math.random() * emojiList.length)
 
-// styles
-const pageStyles = {
-  color: "#232129",
-  padding: "96px",
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-}
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-}
+const NotFoundPage = ({ data, location }) => {
+    const siteTitle = data.site.siteMetadata.title
 
-const paragraphStyles = {
-  marginBottom: 48,
-}
-const codeStyles = {
-  color: "#8A6534",
-  padding: 4,
-  backgroundColor: "#FFF4DB",
-  fontSize: "1.25rem",
-  borderRadius: 4,
-}
-
-// markup
-const NotFoundPage = () => {
-  return (
-    <main style={pageStyles}>
-      <title>Not found</title>
-      <h1 style={headingStyles}>Page not found</h1>
-      <p style={paragraphStyles}>
-        Sorry{" "}
-        <span role="img" aria-label="Pensive emoji">
-          😔
-        </span>{" "}
-        we couldn’t find what you were looking for.
-        <br />
-        {process.env.NODE_ENV === "development" ? (
-          <>
-            <br />
-            Try creating a page in <code style={codeStyles}>src/pages/</code>.
-            <br />
-          </>
-        ) : null}
-        <br />
-        <Link to="/">Go home</Link>.
-      </p>
-    </main>
+    return (
+      <Layout location={location} title={siteTitle}>
+        <Seo title="404: Not Found" />
+        <h1>404: Not Found</h1>
+        <div
+            className={`page-error`}
+            style={{
+              position: `absolute`,
+              top: `50%`,
+              left: `50%`,
+              transform: `translate(-50%, -50%)`
+            }}
+        >
+          <div
+              className={`error-emoji`}
+              style={{
+                lineHeight: "150px",
+                color: `#dadce0`,
+                fontSize: `150px`
+              }}
+          >
+            {emojiList[emojiIndex]}
+          </div>
+          <div
+              className={`error-text`}
+              style={{
+                lineHeight: `21px`,
+                marginTop: `60px`,
+                whiteSpace: `pre-wrap`,
+                textAlign: `center`
+              }}
+          >
+            {errorMap.PAGE_NOT_FOUND}
+          </div>
+        </div>
+          <p >
+            <Link to="/">Go home</Link>
+          </p>
+      </Layout>
   )
 }
 
 export default NotFoundPage
+
+export const pageQuery = graphql`
+  query {
+    site {
+      siteMetadata {
+        title
+      }
+    }
+  }
+`

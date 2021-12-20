@@ -42,6 +42,15 @@ module.exports = {
       __key: "pages",
     },
     {
+      resolve: "gatsby-source-filesystem",
+      options:
+          {name: "posts",
+        path: "./content/posts",
+
+      },
+      __key: "posts",
+    },
+    {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
@@ -57,7 +66,12 @@ module.exports = {
               wrapperStyle: `margin-bottom: 1.0725rem`,
             },
           },
-          `gatsby-remark-prismjs`,
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {
+              showLineNumbers: true,
+            }
+          },
           `gatsby-remark-copy-linked-files`,
           `gatsby-remark-smartypants`,
         ],
